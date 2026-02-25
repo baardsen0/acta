@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>acta</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>acta</h1>
+    <p class="lead">Purpose: log entries with clear accountability and timestamped records.</p>
+
+    <nav class="tabs" aria-label="Main sections">
+      <button type="button" class="tab-btn active" data-tab="entry">Entry</button>
+      <button type="button" class="tab-btn" data-tab="entries">Entries</button>
+      <button type="button" class="tab-btn" data-tab="settings">Settings</button>
+      <button type="button" class="tab-btn" data-tab="guide">Guide</button>
+    </nav>
+
+    <section id="tab-entry" class="tab-pane active">
+      <section class="card">
+        <h2>Create Log Entry</h2>
+        <div class="helpers">
+          <button id="now-btn" type="button" class="secondary">Use current time</button>
+          <button id="example-btn" type="button" class="secondary">Use example values</button>
+        </div>
+        <form id="entry-form">
+          <label>
+            What <span class="hint" title="Short title or summary for the log entry.">?</span>
+            <input type="text" name="what" placeholder="Routine check completed" required title="Short title or summary.">
+            <span class="helper-text">Example: Routine check completed.</span>
+          </label>
+
+          <label>
+            When <span class="hint" title="Date and time for this log entry.">?</span>
+            <div id="when-24-wrap">
+              <div class="when-24-grid">
+                <input type="date" id="when_date_24" title="Date for this log entry.">
+                <select id="when_hour_24" title="Hour in 24-hour format"></select>
+                <select id="when_minute_24" title="Minute"></select>
+              </div>
+            </div>
+            <div id="when-ampm-wrap" class="hidden">
+              <div class="when-ampm-grid">
+                <input type="date" id="when_date" title="Date for this log entry.">
+                <input type="time" id="when_time_12" step="60" min="01:00" max="12:59" title="Time in 12-hour format (hh:mm).">
+                <select id="when_meridiem" title="AM or PM">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+            <span id="when-helper" class="helper-text">Pick both date and time.</span>
+          </label>
+
+          <label>
+            Where <span class="hint" title="Location, site, team, or context for the entry.">?</span>
+            <input type="text" name="where" placeholder="Warehouse A - aisle 3" required title="Location, site, team, or context.">
+            <span class="helper-text">Example: Warehouse A - aisle 3 or Team Delta.</span>
+          </label>
+
+          <label>
+            Who <span class="hint" title="People related to this entry.">?</span>
+            <div id="who-fields" class="who-fields"></div>
+            <button id="add-who-btn" type="button" class="secondary who-add">+ Add person</button>
+            <span class="helper-text">Add one person per field. Stored as comma-separated names.</span>
+          </label>
+
+          <label>
+            Created by <span class="hint" title="User/person who logs this entry.">?</span>
+            <input type="text" name="created_by" placeholder="baardsen / u_17" required title="Who logged the entry.">
+            <span class="helper-text">This follows your default user setting.</span>
+          </label>
+
+          <button type="submit">Save entry</button>
+          <p id="form-message" class="message"></p>
+        </form>
+      </section>
+
+    </section>
+
+    <section id="tab-entries" class="tab-pane">
+      <section class="card">
+        <h2>Logged Entries</h2>
+        <div class="list-tools">
+          <input id="search-input" type="text" placeholder="Search entries...">
+          <button id="refresh-btn" type="button" class="secondary">Refresh</button>
+          <button id="export-btn" type="button">Export</button>
+        </div>
+        <div id="list" class="list"></div>
+        <div class="pager">
+          <button id="prev-btn" type="button" class="secondary">Prev</button>
+          <span id="page-info" class="helper-text">Page 1 / 1</span>
+          <button id="next-btn" type="button" class="secondary">Next</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="tab-guide" class="tab-pane">
+      <section class="card">
+        <h2>Guide</h2>
+        <p class="helper-text guide-intro">
+          This page explains how to log entries, find them quickly, and export them in the format you need.
+        </p>
+        <div class="guide-grid">
+          <article class="guide-card">
+            <button type="button" class="guide-toggle" aria-expanded="false">
+              <span class="guide-step">1</span>
+              <span class="guide-title">Create Entries</span>
+            </button>
+            <div class="guide-body hidden">
+              <ol class="guide">
+                <li>Go to the <strong>Entry</strong> tab.</li>
+                <li>Fill in <strong>What</strong>, <strong>When</strong>, <strong>Where</strong>, and <strong>Created by</strong>.</li>
+                <li>Under <strong>Who</strong>, add each person with <strong>+ Add person</strong>.</li>
+                <li>Click <strong>Save entry</strong>.</li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="guide-card">
+            <button type="button" class="guide-toggle" aria-expanded="false">
+              <span class="guide-step">2</span>
+              <span class="guide-title">Date & Time</span>
+            </button>
+            <div class="guide-body hidden">
+              <ul class="guide">
+                <li>Set your preference in <strong>Settings</strong> (`24-hour` or `AM/PM`).</li>
+                <li>The Entry form automatically adjusts to match that format.</li>
+                <li><strong>Use current time</strong> fills date/time based on your setting.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="guide-card">
+            <button type="button" class="guide-toggle" aria-expanded="false">
+              <span class="guide-step">3</span>
+              <span class="guide-title">Default User</span>
+            </button>
+            <div class="guide-body hidden">
+              <ul class="guide">
+                <li>Set <strong>User name</strong> in <strong>Settings</strong>.</li>
+                <li>When set, it is used as the default for <strong>Created by</strong>.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="guide-card">
+            <button type="button" class="guide-toggle" aria-expanded="false">
+              <span class="guide-step">4</span>
+              <span class="guide-title">Find Entries</span>
+            </button>
+            <div class="guide-body hidden">
+              <ul class="guide">
+                <li>Use <strong>Search</strong> in the <strong>Entries</strong> tab.</li>
+                <li>Entries are sorted newest first.</li>
+                <li>Use <strong>Prev</strong>/<strong>Next</strong> for paging (5 per page).</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="guide-card">
+            <button type="button" class="guide-toggle" aria-expanded="false">
+              <span class="guide-step">5</span>
+              <span class="guide-title">Export</span>
+            </button>
+            <div class="guide-body hidden">
+              <ul class="guide">
+                <li>Choose export format in <strong>Settings</strong> (`MD`, `PDF`, `XLS`, or `JSON`).</li>
+                <li>Click <strong>Export</strong> in the <strong>Entries</strong> tab.</li>
+                <li>Export includes all entries, not just current page/search results.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section id="tab-settings" class="tab-pane">
+      <section class="card">
+        <h2>Settings</h2>
+        <p class="helper-text">Choose your preferred date format and default user.</p>
+        <div class="settings-grid">
+          <label>
+            Date format
+            <select id="setting-time-format">
+              <option value="24h">24-hour</option>
+              <option value="ampm">AM/PM</option>
+            </select>
+          </label>
+          <label>
+            Export format
+            <select id="setting-export-format">
+              <option value="md">MD</option>
+              <option value="pdf">PDF</option>
+              <option value="xls">XLS</option>
+              <option value="json">JSON</option>
+            </select>
+          </label>
+          <label>
+            User name
+            <input id="setting-default-user" type="text" placeholder="baardsen / u_17">
+          </label>
+        </div>
+        <button id="save-settings-btn" type="button" class="secondary">Save settings</button>
+        <p id="settings-message" class="message"></p>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <script src="app.js"></script>
+</body>
+</html>

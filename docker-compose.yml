@@ -1,0 +1,11 @@
+services:
+  acta:
+    build: .
+    container_name: acta
+    ports:
+      - "5003:5003"
+    environment:
+      - ACTA_DATA_FILE=/data/acta.jsonl
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
